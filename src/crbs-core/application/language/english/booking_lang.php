@@ -157,3 +157,17 @@ $lang['booking.toggle_multi_select'] = 'Toggle multi-select';
 
 $lang['booking.status.booked'] = 'Booked';
 $lang['booking.status.cancelled'] = 'Cancelled';
+$lang['booking.status.pending'] = 'Pending approval';
+$lang['booking.status.declined'] = 'Declined';
+
+$lang['booking.approvals'] = 'Approvals';
+$lang['booking.approval.none_pending'] = 'There are no bookings pending your approval.';
+$lang['booking.approval.action.approve'] = 'Approve';
+$lang['booking.approval.action.decline'] = 'Decline';
+$lang['booking.approval.confirm_approve'] = 'Are you sure you want to approve this booking?';
+$lang['booking.approval.confirm_decline'] = 'Are you sure you want to decline this booking?';
+$lang['booking.approval.reason_placeholder'] = 'Reason for declining (required)...';
+$lang['booking.approval.approved'] = 'The booking has been approved.';
+$lang['booking.approval.declined'] = 'The booking has been declined.';
+$lang['booking.approval.error.already_decided'] = 'This booking has already been decided by another person.';
+$lang['booking.approval.error.no_permission'] = 'You do not have permission to approve or decline this booking.';

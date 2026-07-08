@@ -26,6 +26,8 @@ class Permission
 
 	const ROOM_VIEW = 'room.view';
 
+	const BOOKING_APPROVE = 'booking.approve';
+
 	const BK_SGL_CREATE = 'book_single.create';
 	const BK_SGL_EDIT_OTHER = 'book_single.edit_other_booking';
 	const BK_SGL_CANCEL_OTHER = 'book_single.cancel_other_booking';

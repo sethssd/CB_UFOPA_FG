@@ -10,8 +10,10 @@ class Bookings_model extends CI_Model
 {
 
 
+	const STATUS_PENDING = 5;
 	const STATUS_BOOKED = 10;
 	const STATUS_CANCELLED = 15;
+	const STATUS_DECLINED = 20;
 
 	protected $table = 'bookings';
 
@@ -33,7 +35,7 @@ class Bookings_model extends CI_Model
 
 	public function __construct()
 	{
-		$this->load->helper('result');
+		$this->load->helper(['result']);
 		$this->load->model('sessions_model');
 	}
 
@@ -617,6 +619,160 @@ class Bookings_model extends CI_Model
 		$update2 = $this->db->update('bookings_repeat', $data, $where, 1);
 
 		return ($update1 && $update2);
+	}
+
+
+	/**
+	 * Mark a booking as pending approval.
+	 *
+	 */
+	public function set_pending($booking_id)
+	{
+		$data = [
+			'status' => self::STATUS_PENDING,
+		];
+
+		return $this->db->update($this->table, $data, ['booking_id' => $booking_id], 1);
+	}
+
+
+	/**
+	 * Approve a pending booking. Only affects bookings currently
+	 * pending, to avoid re-approving a booking that has since been
+	 * cancelled or declined by someone else.
+	 *
+	 */
+	public function approve($booking_id)
+	{
+		$data = [
+			'status' => self::STATUS_BOOKED,
+			'approved_at' => date('Y-m-d H:i:s'),
+			'approved_by' => $this->userauth->user->user_id,
+		];
+
+		$where = [
+			'booking_id' => $booking_id,
+			'status' => self::STATUS_PENDING,
+		];
+
+		return $this->db->update($this->table, $data, $where, 1);
+	}
+
+
+	/**
+	 * Decline a pending booking. Only affects bookings currently
+	 * pending, for the same reason as approve().
+	 *
+	 */
+	public function decline($booking_id, $reason = NULL)
+	{
+		$data = [
+			'status' => self::STATUS_DECLINED,
+			'decline_reason' => $reason,
+			'cancelled_at' => date('Y-m-d H:i:s'),
+			'cancelled_by' => $this->userauth->user->user_id,
+		];
+
+		$where = [
+			'booking_id' => $booking_id,
+			'status' => self::STATUS_PENDING,
+		];
+
+		return $this->db->update($this->table, $data, $where, 1);
+	}
+
+
+	/**
+	 * Find bookings pending approval, in rooms/groups where the given
+	 * user has permission to approve bookings (role or ACL scoped).
+	 *
+	 */
+	public function find_pending_for_approver($user_id)
+	{
+		$user_id_val = $this->db->escape($user_id);
+
+		$sql = "SELECT b.booking_id
+				FROM bookings b
+				INNER JOIN rooms r ON r.room_id = b.room_id
+				CROSS JOIN (
+					SELECT acl.entity_type, acl.entity_id
+					FROM auth_permissions ap
+					INNER JOIN auth_acl_permissions aap USING (permission_id)
+					INNER JOIN auth_acl acl USING (acl_id)
+					INNER JOIN users u ON u.user_id = {$user_id_val}
+					WHERE ap.name = 'booking.approve'
+					AND (
+						(acl.context_type = 'role' AND acl.context_id = u.role_id)
+						OR (acl.context_type = 'user' AND acl.context_id = u.user_id)
+						OR (acl.context_type = 'department' AND acl.context_id = u.department_id)
+					)
+				) roomacl
+				WHERE b.status = " . self::STATUS_PENDING . "
+				AND CASE roomacl.entity_type
+					WHEN 'room_group' THEN roomacl.entity_id = r.room_group_id
+					WHEN 'room' THEN roomacl.entity_id = r.room_id
+				END
+				ORDER BY b.date ASC";
+
+		$query = $this->db->query($sql);
+		$ids = array_map(function($row) { return $row->booking_id; }, $query->result());
+
+		return $this->find_pending_by_ids($ids);
+	}
+
+
+	/**
+	 * Like find_by_ids(), but for bookings pending approval. Kept
+	 * separate so find_by_ids() (which only returns confirmed bookings)
+	 * is not affected.
+	 *
+	 */
+	public function find_pending_by_ids(array $booking_ids)
+	{
+		if (empty($booking_ids)) return [];
+
+		$this->db->reset_query();
+
+		$this->db->select([
+			'b.booking_id', 'b.repeat_id', 'b.period_id', 'b.room_id',
+			'b.user_id', 'b.date', 'b.status', 'b.notes',
+		]);
+		$this->db->select([
+			'u.user_id AS user__user_id',
+			'u.username AS user__username',
+			'u.displayname AS user__displayname',
+		], FALSE);
+		$this->db->select([
+			'rm.room_id AS room__room_id',
+			'rm.name AS room__name',
+		], FALSE);
+		$this->db->select(['dp.name AS department__name']);
+		$this->db->select([
+			'p.name AS period__name',
+			'p.time_start AS period__time_start',
+			'p.time_end AS period__time_end',
+		]);
+
+		$this->db->from("{$this->table} AS b");
+		$this->db->join('periods p', 'period_id', 'INNER');
+		$this->db->join('rooms rm', 'room_id', 'INNER');
+		$this->db->join('users u', 'b.user_id = u.user_id', 'LEFT');
+		$this->db->join('departments dp', 'b.department_id = dp.department_id', 'LEFT');
+
+		$this->db->where('b.status', self::STATUS_PENDING);
+		$this->db->where_in('b.booking_id', $booking_ids);
+
+		$this->db->order_by('b.date', 'ASC');
+		$this->db->order_by('p.time_start', 'ASC');
+
+		$query = $this->db->get();
+		$result = $query->result();
+
+		foreach ($result as &$row) {
+			$row = $this->wake_value($row);
+		}
+
+		return $result;
 	}
 
 
