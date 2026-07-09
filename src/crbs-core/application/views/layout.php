@@ -61,11 +61,11 @@ foreach ($js as $js_conf) {
 <link rel="icon" type="image/png" sizes="32x32" href="<?= asset_url('assets/brand/favicon-32x32.png', true) ?>">
 <link rel="icon" type="image/png" sizes="16x16" href="<?= asset_url('assets/brand/favicon-16x16.png', true) ?>">
 <link rel="manifest" href="<?= asset_url(sprintf('assets/brand/site%s.webmanifest', $conf_suffix), true) ?>">
-<link rel="mask-icon" href="<?= asset_url('assets/brand/safari-pinned-tab.svg', true) ?>" color="#ff6400">
+<link rel="mask-icon" href="<?= asset_url('assets/brand/safari-pinned-tab.svg', true) ?>" color="#19413a">
 <link rel="shortcut icon" href="<?= asset_url('assets/brand/favicon.ico', true) ?>">
-<meta name="msapplication-TileColor" content="#ff6400">
+<meta name="msapplication-TileColor" content="#19413a">
 <meta name="msapplication-config" content="<?= asset_url(sprintf('assets/brand/browserconfig%s.xml', $conf_suffix), true) ?>">
-<meta name="theme-color" content="#ff6400">
+<meta name="theme-color" content="#19413a">
 <script type="text/javascript">
 function ready(fn) {
 	if (document.readyState !== "loading") {
@@ -105,10 +105,10 @@ var BASE_URL = "<?= base_url() ?>";
 					<div class="title">
 						<?php
 						$logo = img([
-							'src' => asset_url('assets/images/crbs-logo-square.svg'),
+							'src' => asset_url('assets/brand/logo-header.png'),
 							'width' => 24,
 							'height' => 24,
-							'alt' => 'classroombookings logo',
+							'alt' => 'UFOPA logo',
 						]);
 						$name = '';
 						$output = '';
@@ -119,9 +119,9 @@ var BASE_URL = "<?= base_url() ?>";
 						if (!empty($name)) {
 							$name = html_escape($name);
 						} else {
-							$attrs = "title='classroombookings' style='font-weight:normal;color:#0081C2;letter-spacing:-1px'";
+							$attrs = "title='classroombookings' style='font-weight:normal;color:#19413a;letter-spacing:-1px'";
 							$name = "classroom";
-							$name .= "<span style='color:#ff6400;font-weight:bold'>bookings</span>";
+							$name .= "<span style='color:#9BB93B;font-weight:bold'>bookings</span>";
 						}
 						echo anchor('/', $logo . $name, $attrs);
 						?>

@@ -171,6 +171,11 @@ class MY_Controller extends CI_Controller
 				? 'assets/css/print.css'
 				: 'assets/css/print.min.css'
 		];
+
+		$this->data['css'][] = [
+			'media' => 'screen',
+			'path' => 'assets/css/custom-theme.css'
+		];
 	}
 
 
@@ -228,7 +233,7 @@ class MY_Controller extends CI_Controller
 		$cookie_lang = get_cookie('crbs_lang');
 		$session_lang = $_SESSION['crbs_lang'] ?? null;
 		$setting_lang = setting('default_language', 'lang');
-		$default = 'english';
+		$default = config_item('language') ?: 'english';
 		$idiom = $cookie_lang ?? $session_lang ?? $setting_lang ?: $default;
 		if ( ! in_array($idiom, $enabled_langs) && ! in_array($idiom, $all_languages)) {
 			$idiom = $default;

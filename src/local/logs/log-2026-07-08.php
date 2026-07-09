@@ -607,3 +607,31 @@ INFO - 2026-07-08 02:17:41 --> Database Forge Class Initialized
 DEBUG - 2026-07-08 02:17:41 --> Migrating up from version 20250420110400 to version 20250421122200
 DEBUG - 2026-07-08 02:17:41 --> Finished migrating to 20250421122200
 INFO - 2026-07-08 02:17:42 --> Parser Class Initialized
+ERROR - 2026-07-08 20:13:37 --> Severity: Warning --> mysqli::real_connect(): (HY000/2002): Connection refused /var/www/html/crbs-core/system/database/drivers/mysqli/mysqli_driver.php 211
+ERROR - 2026-07-08 20:13:37 --> Severity: Warning --> mysqli::real_connect(): (HY000/2002): Connection refused /var/www/html/crbs-core/system/database/drivers/mysqli/mysqli_driver.php 211
+ERROR - 2026-07-08 20:13:37 --> Severity: error --> Exception: Unable to connect to the database. /var/www/html/crbs-core/system/database/DB_driver.php 435
+ERROR - 2026-07-08 20:13:37 --> Severity: error --> Exception: Unable to connect to the database. /var/www/html/crbs-core/system/database/DB_driver.php 435
+ERROR - 2026-07-08 20:13:56 --> Query error: Table 'cb_db.settings' doesn't exist - Invalid query: SELECT *
+FROM `settings`
+WHERE `group` = 'crbs'
+ERROR - 2026-07-08 20:13:56 --> Severity: error --> Exception: Call to a member function num_rows() on false /var/www/html/crbs-core/application/models/Settings_model.php 45
+ERROR - 2026-07-08 20:14:15 --> Query error: Table 'cb_db.settings' doesn't exist - Invalid query: SELECT *
+FROM `settings`
+WHERE `group` = 'crbs'
+ERROR - 2026-07-08 20:14:15 --> Severity: error --> Exception: Call to a member function num_rows() on false /var/www/html/crbs-core/application/models/Settings_model.php 45
+ERROR - 2026-07-08 20:26:11 --> Query error: Table 'cb_db.settings' doesn't exist - Invalid query: SELECT *
+FROM `settings`
+WHERE `group` = 'crbs'
+ERROR - 2026-07-08 20:26:11 --> Severity: error --> Exception: Call to a member function num_rows() on false /var/www/html/crbs-core/application/models/Settings_model.php 45
+ERROR - 2026-07-08 20:27:37 --> Query error: Table 'cb_db.settings' doesn't exist - Invalid query: SELECT *
+FROM `settings`
+WHERE `group` = 'crbs'
+ERROR - 2026-07-08 20:27:37 --> Severity: error --> Exception: Call to a member function num_rows() on false /var/www/html/crbs-core/application/models/Settings_model.php 45
+ERROR - 2026-07-08 20:29:52 --> Severity: Warning --> mysqli::real_connect(): (HY000/2002): Connection refused /var/www/html/crbs-core/system/database/drivers/mysqli/mysqli_driver.php 211
+ERROR - 2026-07-08 20:29:52 --> Severity: error --> Exception: Unable to connect to the database. /var/www/html/crbs-core/system/database/DB_driver.php 435
+ERROR - 2026-07-08 20:29:56 --> Severity: Warning --> mysqli::real_connect(): (HY000/2002): Connection refused /var/www/html/crbs-core/system/database/drivers/mysqli/mysqli_driver.php 211
+ERROR - 2026-07-08 20:29:56 --> Severity: error --> Exception: Unable to connect to the database. /var/www/html/crbs-core/system/database/DB_driver.php 435
+ERROR - 2026-07-08 20:59:21 --> 404 Page Not Found: /index
+ERROR - 2026-07-08 22:41:04 --> Severity: Warning --> file_get_contents(https://www.classroombookings.com/changelog/opensource/): Failed to open stream: Connection timed out /var/www/html/crbs-core/application/libraries/Changelog.php 155
+ERROR - 2026-07-08 23:01:00 --> 404 Page Not Found: /index
+ERROR - 2026-07-08 23:14:42 --> 404 Page Not Found: setup/Users/index

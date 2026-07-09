@@ -82,6 +82,30 @@ class BookingPermissions
     }
 
 
+    public function booking(?object $user, mixed $room_id = null)
+    {
+    	$use_cache = false;
+    	if (isset($user->user_id) && !is_null($room_id)) {
+    		$use_cache = true;
+    		$cache_key = sprintf('booking_u%d_r%d', $user->user_id, $room_id);
+    		if (isset($this->_cache[$cache_key])) {
+    			return $this->_cache[$cache_key];
+    		}
+    	}
+
+    	$names = [
+			Permission::BOOKING_APPROVE,
+    	];
+
+        $allowed = $this->get_allowed_permissions($names, $user, $room_id);
+        if ($use_cache) {
+        	$this->_cache[$cache_key] = $allowed;
+        }
+
+        return $allowed;
+    }
+
+
     private function get_allowed_permissions($names, $user, $room_id)
     {
     	$allowed = [];

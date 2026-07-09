@@ -14,6 +14,10 @@ $lang['booking.do_not_book'] = 'Do not book';
 
 $lang['booking.booking_status'] = 'Booking status';
 $lang['booking.active_bookings'] = 'Active bookings';
+$lang['booking.all_bookings'] = 'All bookings';
+$lang['booking.bookings_this_session'] = 'Bookings this session';
+$lang['booking.max_active_bookings'] = 'Maximum active bookings';
+$lang['booking.bookings_you_can_create'] = 'Bookings you can create';
 $lang['booking.in_my_rooms'] = 'Bookings in my rooms';
 $lang['booking.existing_booking'] = 'Existing booking';
 $lang['booking.recurs'] = 'Recurs';

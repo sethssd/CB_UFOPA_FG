@@ -61,6 +61,10 @@ abstract class BaseAgent
 	protected array $all_departments = [];
 	protected array $all_users = [];
 
+	// Cache of room_id => requires_approval, to avoid repeated lookups
+	// when creating several bookings across multiple rooms in one request.
+	protected array $room_approval_cache = [];
+
 
 	public function __construct()
 	{
@@ -89,6 +93,34 @@ abstract class BaseAgent
 		unset($this->user->password);
 
 		$this->detect_booking_type();
+	}
+
+
+	/**
+	 * Work out what status a newly-created booking for the given room
+	 * should start with: pending approval, or booked straight away.
+	 *
+	 * Pass the room object as the second argument when it's already
+	 * available (e.g. SingleAgent already has $this->room loaded), to
+	 * avoid an extra lookup. Otherwise, only $room_id is required and
+	 * the room will be looked up (and cached for this request).
+	 *
+	 */
+	protected function initial_status_for_room($room_id, $room = null): int
+	{
+		if ($room !== null) {
+			$requires_approval = ! empty($room->requires_approval);
+		} else {
+			if ( ! array_key_exists($room_id, $this->room_approval_cache)) {
+				$fetched = $this->CI->rooms_model->get_by_id($room_id);
+				$this->room_approval_cache[$room_id] = ($fetched && ! empty($fetched->requires_approval));
+			}
+			$requires_approval = $this->room_approval_cache[$room_id];
+		}
+
+		return $requires_approval
+			? \Bookings_model::STATUS_PENDING
+			: \Bookings_model::STATUS_BOOKED;
 	}
 
 

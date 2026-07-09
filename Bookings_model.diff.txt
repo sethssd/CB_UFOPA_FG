@@ -1,0 +1,82 @@
+diff --git a/crbs-core/application/models/Bookings_model.php b/crbs-core/application/models/Bookings_model.php
+index 6f44657..ba9b8f3 100644
+--- a/crbs-core/application/models/Bookings_model.php
++++ b/crbs-core/application/models/Bookings_model.php
+@@ -10,8 +10,10 @@ class Bookings_model extends CI_Model
+ {
+ 
+ 
++	const STATUS_PENDING = 5;
+ 	const STATUS_BOOKED = 10;
+ 	const STATUS_CANCELLED = 15;
++	const STATUS_DECLINED = 20;
+ 
+ 	protected $table = 'bookings';
+ 
+@@ -620,6 +622,66 @@ class Bookings_model extends CI_Model
+ 	}
+ 
+ 
++	/**
++	 * Mark a booking as pending approval.
++	 *
++	 */
++	public function set_pending($booking_id)
++	{
++		$data = [
++			'status' => self::STATUS_PENDING,
++		];
++
++		return $this->db->update($this->table, $data, ['booking_id' => $booking_id], 1);
++	}
++
++
++	/**
++	 * Approve a pending booking. Only affects bookings currently
++	 * pending, to avoid re-approving a booking that has since been
++	 * cancelled or declined by someone else.
++	 *
++	 */
++	public function approve($booking_id)
++	{
++		$data = [
++			'status' => self::STATUS_BOOKED,
++			'approved_at' => date('Y-m-d H:i:s'),
++			'approved_by' => $this->userauth->user->user_id,
++		];
++
++		$where = [
++			'booking_id' => $booking_id,
++			'status' => self::STATUS_PENDING,
++		];
++
++		return $this->db->update($this->table, $data, $where, 1);
++	}
++
++
++	/**
++	 * Decline a pending booking. Only affects bookings currently
++	 * pending, for the same reason as approve().
++	 *
++	 */
++	public function decline($booking_id, $reason = NULL)
++	{
++		$data = [
++			'status' => self::STATUS_DECLINED,
++			'decline_reason' => $reason,
++			'cancelled_at' => date('Y-m-d H:i:s'),
++			'cancelled_by' => $this->userauth->user->user_id,
++		];
++
++		$where = [
++			'booking_id' => $booking_id,
++			'status' => self::STATUS_PENDING,
++		];
++
++		return $this->db->update($this->table, $data, $where, 1);
++	}
++
++
+ 	public function wake_value($row)
+ 	{
+ 		$row = nest_object_keys($row);

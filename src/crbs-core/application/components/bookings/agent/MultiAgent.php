@@ -384,6 +384,7 @@ class MultiAgent extends BaseAgent
 				'department_id' => !empty($department_id) ? $department_id : null,
 				'user_id' => !empty($user_id) ? $user_id : null,
 				'notes' => !empty($form_slot['notes']) ? $form_slot['notes'] : null,
+				'status' => $this->initial_status_for_room($slot_data->room_id),
 			];
 
 			$this->CI->form_validation->reset_validation();
@@ -736,7 +737,7 @@ class MultiAgent extends BaseAgent
 				'department_id' => !empty($slot_data['department_id']) ? $slot_data['department_id'] : NULL,
 				'week_id' => $multibooking->week_id,
 				'weekday' => $slot->weekday,
-				'status' => Bookings_model::STATUS_BOOKED,
+				'status' => $this->initial_status_for_room($slot->room_id),
 				'notes' => !empty($slot_data['notes']) ? $slot_data['notes'] : NULL,
 				'dates' => $slot_dates,
 			];

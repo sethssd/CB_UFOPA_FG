@@ -278,7 +278,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 	 *
 	 * Generates the SELECT portion of the query
 	 *
-	 * @param	string
+	 * @param	string|array
 	 * @param	mixed
 	 * @return	CI_DB_query_builder
 	 */

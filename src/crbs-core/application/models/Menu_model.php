@@ -22,6 +22,14 @@ class Menu_model extends CI_Model
 			'icon' => 'calendar.png',
 		];
 
+		$this->load->model('bookings_model');
+		$pending_count = count($this->bookings_model->find_pending_for_approver($this->userauth->user->user_id));
+		$items[] = [
+			'label' => lang('booking.approvals') . ($pending_count > 0 ? " ({$pending_count})" : ""),
+			'url' => site_url('approvals'),
+			'icon' => 'tick.png',
+		];
+
 		if (has_setup_permission()) {
 			$items[] = [
 				'label' => lang('setup.setup'),

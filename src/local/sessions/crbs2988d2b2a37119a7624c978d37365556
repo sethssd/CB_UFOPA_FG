@@ -1,1 +1,0 @@
-__ci_last_regenerate|i:1783476924;data|a:0:{}requirements|a:0:{}install_complete|b:0;db_config|a:6:{s:8:"dbdriver";s:6:"mysqli";s:8:"hostname";s:2:"db";s:4:"port";s:4:"3306";s:8:"database";s:5:"cb_db";s:8:"username";s:5:"admin";s:8:"password";s:5:"admin";}

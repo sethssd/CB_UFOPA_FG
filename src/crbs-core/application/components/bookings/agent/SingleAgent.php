@@ -319,6 +319,7 @@ class SingleAgent extends BaseAgent
 			'department_id' => $this->department ? $this->department->department_id : null,
 			'session_id' => $this->session->session_id,
 			'user_id' => $this->user->user_id,
+			'status' => $this->initial_status_for_room($this->room->room_id, $this->room),
 		];
 
 		if (has_permission(Permission::BK_SGL_SET_USER, $this->room->room_id)) {
@@ -513,7 +514,7 @@ class SingleAgent extends BaseAgent
 			'department_id' => $this->department ? $this->department->department_id : NULL,
 			'week_id' => $this->date_info->week_id,
 			'weekday' => $this->date_info->weekday,
-			'status' => Bookings_model::STATUS_BOOKED,
+			'status' => $this->initial_status_for_room($this->room->room_id, $this->room),
 			'notes' => $this->CI->input->post('notes'),
 			'dates' => $dates,
 		];

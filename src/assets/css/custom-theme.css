@@ -1,0 +1,340 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* Main resets and fonts */
+body, input, select, textarea, button {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+body {
+    background-color: #fcfdfc;
+    color: #2d3748;
+}
+
+/* Header */
+.header {
+    background: #19413a !important;
+    padding: 16px 0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    border-bottom: 3px solid #9BB93B !important;
+}
+
+.header-title .title a {
+    color: #ffffff !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+}
+
+.header-title .title a img {
+    margin-right: 10px !important;
+    filter: brightness(0) invert(1) !important; /* Make logo white for better contrast */
+}
+
+.header-meta a {
+    color: #e2e8f0 !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    margin-left: 20px !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    transition: all 0.2s ease !important;
+    text-decoration: none !important;
+}
+
+.header-meta a:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.header-meta .iconbar > .active,
+.header-meta a.active {
+    background-color: #9BB93B !important;
+    color: #ffffff !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #19413a !important;
+    font-weight: 700 !important;
+}
+
+h1 {
+    font-size: 28px !important;
+    margin-bottom: 20px !important;
+}
+
+h2 {
+    font-size: 22px !important;
+    margin-bottom: 16px !important;
+    border-bottom: 2px solid #eef2f1 !important;
+    padding-bottom: 8px !important;
+}
+
+/* Links */
+a {
+    color: #19413a;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a:hover {
+    color: #9BB93B;
+}
+
+/* Buttons */
+button, 
+input[type="submit"], 
+input[type="button"],
+.button, 
+.filter-button {
+    background-color: #9BB93B !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 8px 18px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+    display: inline-block !important;
+    text-align: center !important;
+}
+
+button:hover, 
+input[type="submit"]:hover, 
+input[type="button"]:hover,
+.button:hover, 
+.filter-button:hover {
+    background-color: #8aa433 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12) !important;
+    color: #ffffff !important;
+}
+
+button:active, 
+input[type="submit"]:active, 
+input[type="button"]:active,
+.button:active, 
+.filter-button:active {
+    transform: translateY(0px) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Navigation lists & Submenus */
+nav.buttonlist a {
+    background: transparent !important;
+    border: 1px solid #19413a !important;
+    color: #19413a !important;
+    border-radius: 6px !important;
+    padding: 6px 12px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+nav.buttonlist a:hover {
+    background: #eef2f1 !important;
+    border-color: #9BB93B !important;
+    color: #9BB93B !important;
+}
+
+nav.buttonlist .is-active {
+    background: #19413a !important;
+    color: #ffffff !important;
+    border-color: #19413a !important;
+}
+
+nav.buttonlist .is-active:hover {
+    background: #12302b !important;
+    color: #ffffff !important;
+}
+
+/* Forms */
+table.form td {
+    background-color: #f7faf9 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+table.form td + td {
+    background-color: #ffffff !important;
+}
+
+input[type="text"], 
+input[type="time"], 
+input[type="date"], 
+select, 
+textarea {
+    border: 1px solid #cbd5e0 !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    outline: none !important;
+    transition: all 0.2s ease !important;
+    background-color: #ffffff !important;
+}
+
+input[type="text"]:focus, 
+input[type="time"]:focus, 
+input[type="date"]:focus, 
+select:focus, 
+textarea:focus {
+    border-color: #19413a !important;
+    box-shadow: 0 0 0 3px rgba(25, 65, 58, 0.12) !important;
+}
+
+/* Booking Grid */
+.bookings-grid {
+    border-collapse: separate !important;
+    border-spacing: 4px !important;
+}
+
+.bookings-grid th, 
+.bookings-grid td {
+    border: none !important;
+}
+
+/* Grid statuses */
+.bookings-grid-slot.booking-status-available .bookings-grid-button {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #2d3748 !important;
+    border-radius: 6px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+    font-weight: 500 !important;
+}
+
+.bookings-grid-slot.booking-status-available .bookings-grid-button:hover {
+    background: #f7fafc !important;
+    border-color: #cbd5e0 !important;
+    outline: 2px solid #9BB93B !important;
+}
+
+.bookings-grid-slot.booking-status-booked-single .bookings-grid-button {
+    background: #19413a !important;
+    border: 1px solid #12302b !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+}
+
+.bookings-grid-slot.booking-status-booked-recurring .bookings-grid-button {
+    background: #2b544e !important;
+    border: 1px solid #1e3c37 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+}
+
+.bookings-grid-slot.booking-status-pending .bookings-grid-button {
+    background: #C9A227 !important;
+    border: 1px solid #a8841b !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+}
+
+.bookings-grid-slot.booking-status-declined .bookings-grid-button {
+    background: #e2e8f0 !important;
+    border: 1px solid #cbd5e0 !important;
+    color: #718096 !important;
+    border-radius: 6px !important;
+    text-decoration: line-through !important;
+}
+
+.bookings-grid-slot.booking-status-unavailable {
+    background-color: #f7fafc !important;
+    border: 1px solid #edf2f7 !important;
+    border-radius: 6px !important;
+    opacity: 0.65 !important;
+}
+
+.bookings-grid .highlight {
+    outline: 2px solid #9BB93B !important;
+}
+
+/* Today highlight in grid */
+.bookings-grid-header-cell-is-today strong,
+.bookings-grid-header-cell-is-today span {
+    background: #eef8f6 !important;
+    border: 2px solid #9BB93B !important;
+    border-radius: 6px !important;
+    padding: 4px 8px !important;
+    color: #19413a !important;
+}
+
+/* Tab lists */
+ul.tablist {
+    border-bottom: 2px solid #e2e8f0 !important;
+}
+
+ul.tablist > li > a {
+    color: #718096 !important;
+    font-weight: 600 !important;
+    border-bottom: 3px solid transparent !important;
+    padding: 10px 6px !important;
+    transition: all 0.2s ease !important;
+}
+
+ul.tablist > li > a:hover,
+ul.tablist > li > a.is-active {
+    color: #19413a !important;
+    border-bottom-color: #9BB93B !important;
+}
+
+/* Footer */
+.footer {
+    background-color: #f7faf9 !important;
+    border-top: 1px solid #e2e8f0 !important;
+    padding: 24px 0 !important;
+    margin-top: 48px !important;
+}
+
+.footer #footer {
+    border-top: none !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+#footer_links a {
+    color: #4a5568 !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+
+#footer_links a:hover {
+    color: #19413a !important;
+}
+
+/* Clean UI tweaks */
+.outer {
+    max-width: 95% !important;
+    width: 1100px !important;
+}
+
+.content_area {
+    background: #ffffff !important;
+    padding: 24px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+/* Notice box / Message boxes */
+div.msgbox, p.msgbox {
+    border-radius: 8px !important;
+    padding: 12px 12px 12px 36px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+}
+
+div.msgbox.info, p.msgbox.info {
+    background-color: #eef8f6 !important;
+    border-color: #bbf2e7 !important;
+    color: #14342e !important;
+}
+
+div.msgbox.error, p.msgbox.error {
+    background-color: #fff5f5 !important;
+    border-color: #ffe3e3 !important;
+    color: #c92a2a !important;
+}

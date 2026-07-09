@@ -289,6 +289,14 @@ EOH;
 				$slot_classes[] = 'highlight';
 			}
 
+			if ($slot->booking && isset($slot->booking->status)) {
+				if ($slot->booking->status == 5) {
+					$slot_classes[] = 'booking-status-pending';
+				} elseif ($slot->booking->status == 20) {
+					$slot_classes[] = 'booking-status-declined';
+				}
+			}
+
 			$class_str = implode(' ', array_merge($classes, $slot_classes));
 
 			$view_name = sprintf('bookings_grid/table/slot/%s_%s', $slot->status, $slot->reason);

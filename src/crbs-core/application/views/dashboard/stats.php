@@ -3,27 +3,27 @@
 $blocks = [];
 
 $blocks[] = [
-	'title' => 'All bookings',
+	'title' => lang('booking.all_bookings') ?: 'All bookings',
 	'figure' => $totals['all'],
 ];
 
 $blocks[] = [
-	'title' => 'Bookings this session',
+	'title' => lang('booking.bookings_this_session') ?: 'Bookings this session',
 	'figure' => $totals['session'],
 ];
 
 $blocks[] = [
-	'title' => 'Active bookings',
+	'title' => lang('booking.active_bookings') ?: 'Active bookings',
 	'figure' => $totals['active'],
 ];
 
 if ( ! is_null($constraints['max_active_bookings'])) {
 	$blocks[] = [
-		'title' => 'Maximum active bookings',
+		'title' => lang('booking.max_active_bookings') ?: 'Maximum active bookings',
 		'figure' => $constraints['max_active_bookings'],
 	];
 	$blocks[] = [
-		'title' => 'Bookings you can create',
+		'title' => lang('booking.bookings_you_can_create') ?: 'Bookings you can create',
 		'figure' => ($constraints['max_active_bookings'] - $totals['active']),
 	];
 }
