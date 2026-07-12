@@ -69,7 +69,8 @@ if (empty($bookings)):
 				<a href="<?= site_url('approvals/approve/' . $booking->booking_id) ?>"
 					onclick="return confirm('<?= lang('booking.approval.confirm_approve') ?>')"
 					class="button"
-					style="display: inline-block; margin-bottom: 4px;"
+					style="display: inline-block; margin-bottom: 4px; background-color: #2e8b57; color: #fff; border-radius: 4px; padding: 4px 8px; font-weight: bold; text-decoration: none;"
+					title="Confirmar e aceitar esta reserva"
 				>
 					<?= lang('booking.approval.action.approve') ?>
 				</a>
@@ -82,9 +83,9 @@ if (empty($bookings)):
 						placeholder="<?= lang('booking.approval.reason_placeholder') ?>"
 						rows="2"
 						cols="25"
-						style="display: none; margin-bottom: 4px;"
+						style="display: none; margin-bottom: 4px; width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 4px;"
 					></textarea>
-					<button type="submit" class="button"><?= lang('booking.approval.action.decline') ?></button>
+					<button type="submit" class="button" style="background-color: #d9534f; color: #fff; border-radius: 4px; padding: 4px 8px; font-weight: bold; border: none; cursor: pointer;" title="Recusar e pedir justificativa"><?= lang('booking.approval.action.decline') ?></button>
 				</form>
 			</td>
 		</tr>

@@ -6,7 +6,7 @@ up.motion.config.enabled = false;
  * Settings: LDAP: Form for testing the settings
  *
  */
-up.compiler('[ldap-settings]', function(element) {
+up.compiler('[ldap-settings]', function (element) {
 
 	function populateTestForm() {
 		var attrs = up.Params.fromForm('#ldap_settings'),
@@ -23,7 +23,7 @@ up.compiler('[ldap-settings]', function(element) {
 
 	populateTestForm();
 
-	up.observe(element, { batch: true }, function(diff) {
+	up.observe(element, { batch: true }, function (diff) {
 		// console.log('Observed one or more changes: %o', diff)
 		populateTestForm();
 	});
@@ -35,8 +35,8 @@ up.compiler('[ldap-settings]', function(element) {
  * Session calendars: Navigation mode: make previous/next buttons functional.
  *
  */
-up.compiler('.session-calendars.mode-nav', function(wrapperEl, data) {
-	up.on(wrapperEl, 'click', '.nav-btn', function(event, el) {
+up.compiler('.session-calendars.mode-nav', function (wrapperEl, data) {
+	up.on(wrapperEl, 'click', '.nav-btn', function (event, el) {
 		var currentMonth = el.closest('.session-calendar');
 		var dir = el.getAttribute('data-dir');
 		var navToMonth = null;
@@ -53,7 +53,7 @@ up.compiler('.session-calendars.mode-nav', function(wrapperEl, data) {
  * Session calendars: Config mode: Click on dates to change Timetable Week assignments.
  *
  */
-up.compiler('.session-calendars.mode-config', function(sessionEl, data) {
+up.compiler('.session-calendars.mode-config', function (sessionEl, data) {
 
 	var weekIds = [];
 	var weekClassNames = [];
@@ -70,7 +70,7 @@ up.compiler('.session-calendars.mode-config', function(sessionEl, data) {
 	weekIds.push(null);
 
 	// Click event for changing week assignment of a given date
-	up.on(sessionEl, 'click', '.date-btn', function(event, el) {
+	up.on(sessionEl, 'click', '.date-btn', function (event, el) {
 
 		var cell = el.closest('.date-cell');
 
@@ -85,13 +85,13 @@ up.compiler('.session-calendars.mode-config', function(sessionEl, data) {
 		var nextWeekIdx = (curWeekIdx + 1) % weekIds.length;
 
 		// Next Week ID from the list
-		var newWeekId = weekIds[ (curWeekIdx + 1) % weekIds.length ];
+		var newWeekId = weekIds[(curWeekIdx + 1) % weekIds.length];
 
 		// All cells (potentially on other months) whose week starts on `weekstart`
 		var cells = up.element.all(sessionEl, '.date-cell[data-weekstart="' + weekstart + '"]');
 
 		// Process all cells that match start of week
-		up.util.each(cells, function(cell) {
+		up.util.each(cells, function (cell) {
 
 			// Remove existing week classes
 			for (var i = 0; i < weekClassNames.length; i++) {
@@ -121,7 +121,7 @@ up.compiler('.session-calendars.mode-config', function(sessionEl, data) {
  * On new Unpoly fragments, process nodes with hyperscript
  *
  */
-up.on('up:fragment:inserted', function(event, fragment) {
+up.on('up:fragment:inserted', function (event, fragment) {
 	// Skip if initial load
 	if (event.origin == undefined) return;
 	_hyperscript.processNode(fragment);
@@ -132,9 +132,9 @@ up.on('up:fragment:inserted', function(event, fragment) {
  * Bookings page: controls forms
  *
  */
-up.compiler('[up-copy-to]', function(copyBtn) {
+up.compiler('[up-copy-to]', function (copyBtn) {
 
-	up.on(copyBtn, 'click', function(evt, el, data) {
+	up.on(copyBtn, 'click', function (evt, el, data) {
 
 		var group = el.getAttribute('up-copy-to');
 
@@ -142,7 +142,7 @@ up.compiler('[up-copy-to]', function(copyBtn) {
 		var value = srcEl.value;
 
 		var allItems = up.element.all('[up-copy-group="' + group + '"]');
-		up.util.each(allItems, function(item) {
+		up.util.each(allItems, function (item) {
 			item.value = value;
 		});
 
@@ -150,11 +150,11 @@ up.compiler('[up-copy-to]', function(copyBtn) {
 });
 
 
-up.compiler('select[up-autocomplete]', function(selectEl) {
+up.compiler('select[up-autocomplete]', function (selectEl) {
 	accessibleAutocomplete.enhanceSelectElement({
 		selectElement: selectEl,
 		displayMenu: 'overlay',
-		dropdownArrow: function(obj) {
+		dropdownArrow: function (obj) {
 			return '<svg xmlns="http://www.w3.org/2000/svg" focusable="false" class="autocomplete__dropdown-arrow-down h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />';
 		}
 	});
@@ -177,7 +177,7 @@ up.compiler('select[up-autocomplete]', function(selectEl) {
  * This is used for unavailable slots - like holidays or period unavailability.
  *
  */
-up.macro('.bookings-grid-button[up-content]', function(el) {
+up.macro('.bookings-grid-button[up-content]', function (el) {
 	el.setAttribute('up-position', getPopupAlignment(el));
 });
 
@@ -225,8 +225,8 @@ function doToast(type, text, time) {
 
 //
 
-htmx.on('toast', function(evt) {
-	if ( ! evt.detail.type) return;
+htmx.on('toast', function (evt) {
+	if (!evt.detail.type) return;
 	var type = evt.detail.type.toLowerCase();
 	doToast(type, evt.detail.text, evt.detail.time ? evt.detail.time : null);
 });

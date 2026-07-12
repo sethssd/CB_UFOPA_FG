@@ -163,12 +163,12 @@ $lang['booking.status.declined'] = 'Recusado';
 
 $lang['booking.approvals'] = 'Aprovações';
 $lang['booking.approval.none_pending'] = 'Não há nenhuma reserva pendente da sua aprovação.';
-$lang['booking.approval.action.approve'] = 'Aprovar';
-$lang['booking.approval.action.decline'] = 'Recusar';
-$lang['booking.approval.confirm_approve'] = 'Tem certeza de que deseja aprovar esta reserva?';
+$lang['booking.approval.action.approve'] = 'Aceitar Reserva';
+$lang['booking.approval.action.decline'] = 'Recusar Reserva';
+$lang['booking.approval.confirm_approve'] = 'Tem certeza de que deseja aceitar esta reserva?';
 $lang['booking.approval.confirm_decline'] = 'Tem certeza de que deseja recusar esta reserva?';
 $lang['booking.approval.reason_placeholder'] = 'Motivo da recusa (obrigatório)...';
-$lang['booking.approval.approved'] = 'A reserva foi aprovada com sucesso.';
+$lang['booking.approval.approved'] = 'A reserva foi aceita com sucesso.';
 $lang['booking.approval.declined'] = 'A reserva foi recusada.';
 $lang['booking.approval.error.already_decided'] = 'Esta reserva já foi decidida por outra pessoa.';
 $lang['booking.approval.error.no_permission'] = 'Você não tem permissão para aprovar ou recusar esta reserva.';

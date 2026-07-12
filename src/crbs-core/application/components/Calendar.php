@@ -417,7 +417,6 @@ EOS;
 		$classes = ['date-cell'];
 		$data = [];
 
-		// @TODO check for mode
 
 		// Month number of date
 		$date_month_num = $date->format('n');

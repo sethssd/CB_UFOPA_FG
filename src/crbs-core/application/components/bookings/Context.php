@@ -100,12 +100,6 @@ class Context
 	private $periods = FALSE;
 
 	/**
-	 * Date period for the whole week of the selected date.
-	 *
-	 */
-	private $date_period = FALSE;
-
-	/**
 	 * DateTime object representing the selected date. Populated from date_string.
 	 *
 	 */
@@ -417,12 +411,6 @@ class Context
 		// Get the Dates data for the week
 		$this->dates = $this->CI->dates_model->with_period_count()->get_by_range($week_start, $week_end);
 
-		// Get DatePeriod for week
-		// @TODO might not be necessary if we can just iterate over $this->dates ?
-		$interval = new DateInterval('P1D');
-		$week_end->modify('+1 day');
-		$this->date_period = new DatePeriod($week_start, $interval, $week_end);
-
 		// Get Timetable Week
 		$date_key = $this->datetime->format('Y-m-d');
 		$date_info = $this->dates[$date_key] ?? FALSE;
@@ -433,7 +421,6 @@ class Context
 		$this->date_info = $date_info;
 
 		// Remove entries with no periods
-		// @TODO might not need to do this if we can access period_count var when looping?
 		foreach ($this->dates as $date => $item) {
 			if ($item->period_count == 0) {
 				unset($this->dates[$date]);
