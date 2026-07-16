@@ -24,3 +24,8 @@ TestResults.xml
 
 # MySQL local database folder (raw binaries)
 /mysql_data/
+# ClassroomBookings - config e estado local, gerados por instalação, não versionar
+/src/local/config.php
+/src/local/cache/
+/src/local/logs/
+/src/local/sessions/

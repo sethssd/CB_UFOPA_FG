@@ -12,7 +12,7 @@ echo form_open(current_url(), array('id'=>'login','class'=>'cssform'), array('pa
 ?>
 
 
-<fieldset style="width:336px;"><legend accesskey="L" tabindex="<?php echo tab_index() ?>"><?= lang('auth.log_in') ?></legend>
+<div class="login-form-wrapper" style="max-width: 400px; padding: 10px 0; margin: 0 auto;">
 
 	<p>
 	  <label for="username" class="required"><?= lang('user.field.username') ?></label>
@@ -42,7 +42,7 @@ echo form_open(current_url(), array('id'=>'login','class'=>'cssform'), array('pa
 		?>
 	</p>
 
-</fieldset>
+
 
 
 <?php
@@ -52,3 +52,5 @@ $this->load->view('partials/submit', array(
 ));
 
 echo form_close();
+?>
+</div>

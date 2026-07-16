@@ -105,9 +105,8 @@ var BASE_URL = "<?= base_url() ?>";
 					<div class="title">
 						<?php
 						$logo = img([
-							'src' => asset_url('assets/brand/logo-header.png'),
-							'width' => 24,
-							'height' => 24,
+							'src' => asset_url('assets/brand/apple-touch-icon.png'),
+							'style' => 'width: auto; height: 32px; vertical-align: middle; margin-right: 12px;',
 							'alt' => 'UFOPA logo',
 						]);
 						$name = '';
@@ -123,7 +122,7 @@ var BASE_URL = "<?= base_url() ?>";
 							$name = "classroom";
 							$name .= "<span style='color:#9BB93B;font-weight:bold'>bookings</span>";
 						}
-						echo anchor('/', $logo . $name, $attrs);
+						echo anchor('/', $logo . "<span style='vertical-align: middle; font-size: 1.1em;'>" . $name . "</span>", $attrs);
 						?>
 					</div>
 				</div>
