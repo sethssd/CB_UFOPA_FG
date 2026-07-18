@@ -38,7 +38,7 @@ if ( ! defined('VENDORPATH')) {
 // Environment
 //
 $env = 'production';
-$env_file = ROOTPATH . '.env';
+$env_file = ROOTPATH . 'environment.txt';
 if (is_file($env_file)) {
 	$env_file = trim(file_get_contents($env_file));
 	if (in_array($env_file, ['development', 'production'])) {
