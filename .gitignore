@@ -26,6 +26,13 @@ TestResults.xml
 /mysql_data/
 # ClassroomBookings - config e estado local, gerados por instalação, não versionar
 /src/local/config.php
+/src/crbs-core/application/config/config.php
+/.env
 /src/local/cache/
 /src/local/logs/
 /src/local/sessions/
+# Added by ggshield
+.cache_ggshield
+
+# Added by ggshield
+.cache_ggshield
