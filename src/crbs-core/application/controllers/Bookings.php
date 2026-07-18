@@ -130,6 +130,7 @@ class Bookings extends MY_Controller
 		$msg = $this->session->flashdata('bookings');
 
 		if ($booking) {
+			$this->data['audit_log'] = $this->bookings_model->get_audit_log($booking_id);
 			$this->load->library('table');
 			$this->load->helper('room');
 			$body = $msg . $this->load->view('bookings/view', $this->data, TRUE);

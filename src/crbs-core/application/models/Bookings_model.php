@@ -484,10 +484,15 @@ class Bookings_model extends CI_Model
 
 		$error_info = $this->db->error();
 
+		if ($id) {
+			$new_status = isset($data['status']) ? $data['status'] : self::STATUS_BOOKED;
+			$this->log_audit($id, 'created', NULL, $new_status);
+		}
+
 		$this->db->db_debug = $old_db_debug;
 		$this->db->trans_complete();
 
-		if (!$ins) {
+		if ($this->db->trans_status() === FALSE || !$ins) {
 			if (isset($error_info['code']) && $error_info['code'] == 1062) {
 				$this->error = BookingValidationException::forExistingBooking()->getMessage();
 			} else {
@@ -578,13 +583,26 @@ class Bookings_model extends CI_Model
 	 */
 	public function cancel_single($booking_id)
 	{
+		$booking = $this->get($booking_id);
+		if (!$booking) return FALSE;
+
 		$data = [
 			'status' => self::STATUS_CANCELLED,
 			'cancelled_at' => date('Y-m-d H:i:s'),
 			'cancelled_by' => $this->userauth->user->user_id,
 		];
 
-		return $this->db->update($this->table, $data, ['booking_id' => $booking_id], 1);
+		$this->db->trans_start();
+		
+		$this->db->update($this->table, $data, ['booking_id' => $booking_id], 1);
+
+		if ($booking->status != self::STATUS_CANCELLED) {
+			$this->log_audit($booking_id, 'cancelled', $booking->status, self::STATUS_CANCELLED);
+		}
+
+		$this->db->trans_complete();
+
+		return $this->db->trans_status();
 	}
 
 
@@ -594,9 +612,17 @@ class Bookings_model extends CI_Model
 	 */
 	public function cancel_future($booking_id)
 	{
+		$this->db->trans_start();
+
+		$sql = $this->db->select('booking_id')->where('booking_id', $booking_id)->get_compiled_select($this->table) . ' FOR UPDATE';
+		$this->db->query($sql);
+
 		$booking = $this->get($booking_id);
 
-		if ( ! $booking->repeat_id) return FALSE;
+		if ( ! $booking->repeat_id) {
+			$this->db->trans_complete();
+			return FALSE;
+		}
 
 		$data = [
 			'status' => self::STATUS_CANCELLED,
@@ -610,15 +636,38 @@ class Bookings_model extends CI_Model
 			'date >=' => $booking->date->format('Y-m-d'),
 		];
 
-		return $this->db->update($this->table, $data, $where);
+		$this->db->select('booking_id, status');
+		$this->db->where($where);
+		$sql = $this->db->get_compiled_select($this->table) . ' FOR UPDATE';
+		$affected = $this->db->query($sql)->result();
+
+		$this->db->update($this->table, $data, $where);
+
+		foreach ($affected as $b) {
+			if ($b->status != self::STATUS_CANCELLED) {
+				$this->log_audit($b->booking_id, 'cancelled', $b->status, self::STATUS_CANCELLED);
+			}
+		}
+
+		$this->db->trans_complete();
+
+		return $this->db->trans_status();
 	}
 
 
 	public function cancel_all($booking_id)
 	{
+		$this->db->trans_start();
+
+		$sql = $this->db->select('booking_id')->where('booking_id', $booking_id)->get_compiled_select($this->table) . ' FOR UPDATE';
+		$this->db->query($sql);
+
 		$booking = $this->get($booking_id);
 
-		if ( ! $booking->repeat_id) return FALSE;
+		if ( ! $booking->repeat_id) {
+			$this->db->trans_complete();
+			return FALSE;
+		}
 
 		$data = [
 			'status' => self::STATUS_CANCELLED,
@@ -631,11 +680,23 @@ class Bookings_model extends CI_Model
 			'session_id' => $booking->session_id,
 		];
 
-		$update1 = $this->db->update($this->table, $data, $where);
+		$this->db->select('booking_id, status');
+		$this->db->where($where);
+		$sql = $this->db->get_compiled_select($this->table) . ' FOR UPDATE';
+		$affected = $this->db->query($sql)->result();
 
-		$update2 = $this->db->update('bookings_repeat', $data, $where, 1);
+		$this->db->update($this->table, $data, $where);
+		$this->db->update('bookings_repeat', $data, $where, 1);
 
-		return ($update1 && $update2);
+		foreach ($affected as $b) {
+			if ($b->status != self::STATUS_CANCELLED) {
+				$this->log_audit($b->booking_id, 'cancelled', $b->status, self::STATUS_CANCELLED);
+			}
+		}
+
+		$this->db->trans_complete();
+
+		return $this->db->trans_status();
 	}
 
 
@@ -645,11 +706,23 @@ class Bookings_model extends CI_Model
 	 */
 	public function set_pending($booking_id)
 	{
+		$booking = $this->get($booking_id);
+		if (!$booking) return FALSE;
+
 		$data = [
 			'status' => self::STATUS_PENDING,
 		];
 
-		return $this->db->update($this->table, $data, ['booking_id' => $booking_id], 1);
+		$this->db->trans_start();
+		$this->db->update($this->table, $data, ['booking_id' => $booking_id], 1);
+
+		if ($booking->status != self::STATUS_PENDING) {
+			$this->log_audit($booking_id, 'set_pending', $booking->status, self::STATUS_PENDING);
+		}
+
+		$this->db->trans_complete();
+
+		return $this->db->trans_status();
 	}
 
 
@@ -672,7 +745,17 @@ class Bookings_model extends CI_Model
 			'status' => self::STATUS_PENDING,
 		];
 
-		return $this->db->update($this->table, $data, $where, 1);
+		$this->db->trans_start();
+		
+		$this->db->update($this->table, $data, $where, 1);
+		
+		if ($this->db->affected_rows() > 0) {
+			$this->log_audit($booking_id, 'approved', self::STATUS_PENDING, self::STATUS_BOOKED);
+		}
+
+		$this->db->trans_complete();
+
+		return $this->db->trans_status();
 	}
 
 
@@ -695,7 +778,17 @@ class Bookings_model extends CI_Model
 			'status' => self::STATUS_PENDING,
 		];
 
-		return $this->db->update($this->table, $data, $where, 1);
+		$this->db->trans_start();
+		
+		$this->db->update($this->table, $data, $where, 1);
+		
+		if ($this->db->affected_rows() > 0) {
+			$this->log_audit($booking_id, 'declined', self::STATUS_PENDING, self::STATUS_DECLINED, $reason);
+		}
+
+		$this->db->trans_complete();
+
+		return $this->db->trans_status();
 	}
 
 
@@ -1091,7 +1184,34 @@ class Bookings_model extends CI_Model
 		return $total;
 	}
 
+	protected function log_audit($booking_id, $action, $previous_status, $new_status, $reason = NULL)
+	{
+		$actor_id = isset($this->userauth->user->user_id) ? $this->userauth->user->user_id : NULL;
 
+		$data = [
+			'booking_id'      => $booking_id,
+			'action'          => $action,
+			'previous_status' => $previous_status,
+			'new_status'      => $new_status,
+			'actor_user_id'   => $actor_id,
+			'reason'          => $reason,
+			'created_at'      => date('Y-m-d H:i:s'),
+		];
 
+		return $this->db->insert('bookings_audit_log', $data);
+	}
+
+	public function get_audit_log($booking_id)
+	{
+		$this->db->select('bal.*, u.username as actor_username, u.displayname as actor_displayname');
+		$this->db->from('bookings_audit_log bal');
+		$this->db->join('users u', 'bal.actor_user_id = u.user_id', 'left');
+		$this->db->where('bal.booking_id', $booking_id);
+		$this->db->order_by('bal.created_at', 'ASC');
+		$this->db->order_by('bal.audit_id', 'ASC');
+
+		$query = $this->db->get();
+		return $query->result();
+	}
 
 }

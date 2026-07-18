@@ -220,3 +220,31 @@ if ($photo_url = image_url($booking->room->photo)) {
 
 echo $fields_html;
 echo $photo_html;
+
+// Audit Log
+//
+
+if (isset($audit_log) && !empty($audit_log)) {
+	echo '<h3>' . lang('booking.audit_log') . '</h3>';
+
+	$this->table->clear();
+	$this->table->set_heading(
+		lang('app.date'),
+		lang('app.action'),
+		lang('app.user'),
+		lang('booking.notes')
+	);
+
+	foreach ($audit_log as $log) {
+		$actor = !empty($log->actor_displayname) ? $log->actor_displayname : ($log->actor_username ?: lang('app.system'));
+		
+		$this->table->add_row(
+			date_output_long($log->created_at) . ' ' . date_output_time($log->created_at),
+			html_escape($log->action),
+			html_escape($actor),
+			html_escape($log->reason)
+		);
+	}
+
+	echo $this->table->generate();
+}
