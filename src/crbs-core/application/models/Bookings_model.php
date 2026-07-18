@@ -475,11 +475,28 @@ class Bookings_model extends CI_Model
 		$data['created_at'] = date('Y-m-d H:i:s');
 		$data['created_by'] = $this->userauth->user->user_id;
 
-		$ins = $this->db->insert($this->table, $data);
+		$this->db->trans_start();
+		$old_db_debug = $this->db->db_debug;
+		$this->db->db_debug = FALSE;
 
-		return ($ins && $id = $this->db->insert_id())
-			? $id
-			: FALSE;
+		$ins = $this->db->insert($this->table, $data);
+		$id = $ins ? $this->db->insert_id() : FALSE;
+
+		$error_info = $this->db->error();
+
+		$this->db->db_debug = $old_db_debug;
+		$this->db->trans_complete();
+
+		if (!$ins) {
+			if (isset($error_info['code']) && $error_info['code'] == 1062) {
+				$this->error = BookingValidationException::forExistingBooking()->getMessage();
+			} else {
+				$this->error = !empty($error_info['message']) ? $error_info['message'] : lang('booking.error.generic');
+			}
+			return FALSE;
+		}
+
+		return $id;
 	}
 
 
